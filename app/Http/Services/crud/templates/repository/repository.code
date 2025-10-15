@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Repositories;
+
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Prettus\Repository\Eloquent\BaseRepository;
+
+class {{modelFilename}}Repository extends BaseRepository
+{
+    public function model()
+    {
+        return \App\Models\{{modelFilename}}::class;
+    }
+
+    public function index($dataTable)
+    {
+        return $dataTable->render('{{modulName}}.index');
+    }
+
+    public function create(array $attributes = [])
+    {
+        return view('{{modulName}}.create', $attributes);
+    }
+
+    public function store($request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->only([
+                'title', 'content', 'meta_title', 'meta_description', 'status'
+            ]);
+            $data['created_by_id'] = Auth::id();
+
+            $model = $this->model->create($data);
+
+            if ($request->hasFile('meta_image') && $request->file('meta_image')->isValid()) {
+                $model->addMediaFromRequest('meta_image')->toMediaCollection('meta_image');
+            }
+
+            DB::commit();
+            return redirect()->route('{{modulName}}.index')->with('success', __('Created successfully'));
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
+    public function edit($id)
+    {
+        $model = $this->model->findOrFail($id);
+
+        return view('{{modulName}}.edit', [
+            '{{modulName}}' => $model,
+        ]);
+    }
+
+    public function update($request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $model = $this->model->findOrFail($id);
+
+            $data = $request->only([
+                'title', 'content', 'meta_title', 'meta_description', 'status'
+            ]);
+            $data['created_by_id'] = Auth::id();
+
+            $model->update($data);
+
+            if ($request->hasFile('meta_image') && $request->file('meta_image')->isValid()) {
+                $model->clearMediaCollection('meta_image');
+                $model->addMediaFromRequest('meta_image')->toMediaCollection('meta_image');
+            }
+
+            DB::commit();
+            return redirect()->route('{{modulName}}.index')->with('success', __('Updated successfully'));
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            $model = $this->model->findOrFail($id);
+            $model->delete();
+
+            DB::commit();
+            return redirect()->back()->with('success', __('Deleted successfully'));
+        } catch (Exception $e) {
+            DB::rollback();
+            return back()->with(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $ids = $request->input('ids', []);
+
+            if (empty($ids)) {
+                return back()->with('error', __('No items selected for deletion.'));
+            }
+
+            $this->model->whereIn('id', $ids)->delete();
+
+            DB::commit();
+            return redirect()->back()->with('success', __('Selected items deleted successfully.'));
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function status($id, $status)
+    {
+        try {
+            $model = $this->model->findOrFail($id);
+            $model->update(['status' => $status]);
+
+            return response()->json(['resp' => $model]);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+}
