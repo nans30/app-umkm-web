@@ -16,12 +16,12 @@ class {{modelFilename}}Repository extends BaseRepository
 
     public function index($dataTable)
     {
-        return $dataTable->render('{{modulName}}.index');
+        return $dataTable->render('admin.{{modulName}}.index');
     }
 
     public function create(array $attributes = [])
     {
-        return view('{{modulName}}.create', $attributes);
+        return view('admin.{{modulName}}.create', $attributes);
     }
 
     public function store($request)
@@ -40,7 +40,7 @@ class {{modelFilename}}Repository extends BaseRepository
             }
 
             DB::commit();
-            return redirect()->route('{{modulName}}.index')->with('success', __('Created successfully'));
+            return redirect()->route('admin.{{modulName}}.index')->with('success', __('Created successfully'));
         } catch (Exception $e) {
             DB::rollback();
             throw $e;
@@ -51,7 +51,7 @@ class {{modelFilename}}Repository extends BaseRepository
     {
         $model = $this->model->findOrFail($id);
 
-        return view('{{modulName}}.edit', [
+        return view('admin.{{modulName}}.edit', [
             '{{modulName}}' => $model,
         ]);
     }
@@ -75,7 +75,7 @@ class {{modelFilename}}Repository extends BaseRepository
             }
 
             DB::commit();
-            return redirect()->route('{{modulName}}.index')->with('success', __('Updated successfully'));
+            return redirect()->route('admin.{{modulName}}.index')->with('success', __('Updated successfully'));
         } catch (Exception $e) {
             DB::rollback();
             throw $e;

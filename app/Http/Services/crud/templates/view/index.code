@@ -32,7 +32,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <a href="{{ route('{{nameModul}}.create') }}" class="btn btn-secondary">Add {{titleModul}}</a>
+                        <a href="{{ route('admin.{{nameModul}}.create') }}" class="btn btn-secondary">Add {{titleModul}}</a>
                     </div>
                 </div>
 

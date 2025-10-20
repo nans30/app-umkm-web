@@ -12,36 +12,36 @@ class {{modelFilename}}Policy
 
     public function viewAny(User $user): bool
     {
-        return $user->can('{{modulName}}.index');
+        return $user->can('admin.{{modulName}}.index');
     }
 
     public function view(User $user, {{modelFilename}} $model): bool
     {
-        return $user->can('{{modulName}}.index');
+        return $user->can('admin.{{modulName}}.index');
     }
 
     public function create(User $user): bool
     {
-        return $user->can('{{modulName}}.create');
+        return $user->can('admin.{{modulName}}.create');
     }
 
     public function update(User $user, {{modelFilename}} $model): bool
     {
-        return $user->can('{{modulName}}.edit');
+        return $user->can('admin.{{modulName}}.edit');
     }
 
     public function delete(User $user, {{modelFilename}} $model): bool
     {
-        return $user->can('{{modulName}}.destroy');
+        return $user->can('admin.{{modulName}}.destroy');
     }
 
     public function restore(User $user, {{modelFilename}} $model): bool
     {
-        return $user->can('{{modulName}}.restore');
+        return $user->can('admin.{{modulName}}.restore');
     }
 
     public function forceDelete(User $user, {{modelFilename}} $model): bool
     {
-        return $user->can('{{modulName}}.forceDelete');
+        return $user->can('admin.{{modulName}}.forceDelete');
     }
 }

@@ -22,10 +22,10 @@ return new class extends Migration
         });
 
         $actions = [
-            'index' => '{{modulName}}.index',
-            'create' => '{{modulName}}.create',
-            'edit' => '{{modulName}}.edit',
-            'delete' => '{{modulName}}.destroy',
+            'index' => 'admin.{{modulName}}.index',
+            'create' => 'admin.{{modulName}}.create',
+            'edit' => 'admin.{{modulName}}.edit',
+            'delete' => 'admin.{{modulName}}.destroy',
         ];
 
         DB::table('modules')->insert([

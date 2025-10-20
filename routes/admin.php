@@ -61,4 +61,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.', 'prefix' => 'admin'], 
         return redirect()->back()->with('success', 'Cache cleared successfully!');
     })->name('clear.cache');
 
+    //MODUL_GENERATE_JANGAN_DIHAPUS
+    
+    
+
+
 });
