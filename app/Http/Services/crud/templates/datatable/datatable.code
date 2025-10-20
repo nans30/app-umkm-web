@@ -25,8 +25,8 @@ class {{modelFilename}}DataTable extends DataTable
                 ]);
             })
             ->editColumn('action', function ($row) {
-                $editUrl = route('{{routeName}}.edit', $row->id);
-                $deleteUrl = route('{{routeName}}.destroy', $row->id);
+                $editUrl = route('admin.{{routeName}}.edit', $row->id);
+                $deleteUrl = route('admin.{{routeName}}.destroy', $row->id);
 
                 return '
                     <a href="' . $editUrl . '" class="btn btn-light btn-icon btn-sm rounded-circle" data-bs-toggle="tooltip" title="Edit">
