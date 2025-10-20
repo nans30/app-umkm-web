@@ -66,4 +66,10 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.', 'prefix' => 'admin'], 
     
 
 
+
+//category
+Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
+Route::prefix('category')->name('category.')->group(function () {
+    Route::post('bulk-delete', [App\Http\Controllers\Admin\CategoryController::class, 'bulkDelete'])->name('bulkDelete');
+});
 });
